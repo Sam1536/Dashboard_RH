@@ -1,0 +1,31 @@
+{
+  "version": "1.0.0",
+  "diagrams": [
+    {
+      "name": "Todas as tabelas",
+      "zoomValue": 100,
+      "isDefault": true,
+      "tables": [
+        "BaseFuncionarios"
+      ],
+      "layout": {
+        "boundingBoxWidth": 180,
+        "boundingBoxHeight": 300,
+        "boundingBoxPosition": {
+          "x": 0,
+          "y": 0
+        },
+        "nodes": [
+          {
+            "height": 300,
+            "layedOut": true,
+            "left": 0,
+            "nodeIndex": "BaseFuncionarios",
+            "top": 0,
+            "width": 180
+          }
+        ]
+      }
+    }
+  ]
+}

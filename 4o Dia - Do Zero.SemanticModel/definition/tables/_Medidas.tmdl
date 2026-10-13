@@ -1,0 +1,56 @@
+table _Medidas
+	lineageTag: 3e6a0b26-6c85-482e-896d-0f6740c6e713
+
+	measure 'Total Contratações' = COUNT(BaseFuncionarios[Nome Completo])
+		formatString: 0
+		lineageTag: 227f1cf1-bb8c-4620-83a4-1f9d92f3f9f7
+
+	measure 'Funcionarios Ativo' = ```
+			
+			CALCULATE(
+			    COUNT(
+			        BaseFuncionarios[Nome Completo]),
+			        BaseFuncionarios[Data de Demissao] = BLANK() 
+			)
+			```
+		formatString: 0
+		lineageTag: 47043a8c-175c-4e7d-a4e9-65e7326156cb
+
+	measure 'Total Demissões' = ```
+			
+			CALCULATE(
+			    COUNT(
+			        BaseFuncionarios[Nome Completo]),
+			        BaseFuncionarios[Data de Demissao] <> BLANK()
+			)
+			
+			
+			// Ou de forma mais simples
+			/*
+			Total Demissões = 
+			[Total Contrataçoes] - [Funcionarios Ativo]
+			*/
+			```
+		formatString: 0
+		lineageTag: e38e86cb-45b5-4bc6-8497-c41f0b606ea4
+
+	measure '% Turnover' = [Total Demissões] / [Total Contratações]
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: df979ac2-bb52-450e-a8d2-8fe78d420246
+
+	measure 'Desvio da Meta' = 0.08 - [% Turnover]
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 5e1b55c5-6188-4a34-ad0d-cd5b56a4bbba
+
+	partition _Medidas = m
+		mode: import
+		source =
+				let
+				    Fonte = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Coluna 1" = _t]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"Coluna 1", type text}}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado",{"Coluna 1"})
+				in
+				    #"Colunas Removidas"
+
+	annotation PBI_ResultType = Table
+
