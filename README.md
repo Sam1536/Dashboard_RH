@@ -1,5 +1,3 @@
-# Dashboard RH
-
 
 # 👥 Dashboard de RH | Power BI
 
